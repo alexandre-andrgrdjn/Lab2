@@ -8,28 +8,32 @@ int spawn_fibonacci_processes(int n) {
 //Base cases
 
     if (n == 0) {
-        printf("Processus %d calcule F(0) = 0\n", getpid());
+        printf("Processus %d calculated F(0) = 0\n", getpid());
+        sleep(1);
         exit(0);
     }
     if (n == 1) {
-        printf("Processus %d calcule F(1) = 1\n", getpid());
+        printf("Processus %d calculated F(1) = 1\n", getpid());
+        sleep(1);
         exit(1);
     }
 
 //Recursive case
 
-    printf("Processus %d calcule F(%d)\n", getpid(), n);
+    printf("Process %d is calculating F(%d) ... \n", getpid(), n);
 
     int status1, status2;
     pid_t pid1, pid2;
 
     pid1 = fork(); //check if it's the child
     if (pid1 == 0) {
+        sleep(1);
         spawn_fibonacci_processes(n - 1); //recursive
     }
 
     pid2 = fork();
     if (pid2 == 0) { //check if it's the child
+    sleep(1);
         spawn_fibonacci_processes(n - 2); //recursive 
     }
 
@@ -45,7 +49,9 @@ int spawn_fibonacci_processes(int n) {
 
     // Calculate the final result
     int result = result1 + result2;
-    printf("Processus %d a calculé F(%d) = %d\n", getpid(), n, result);
+    sleep(1);
+    printf("Process %d calculated F(%d) = %d\n", getpid(), n, result);
+    sleep(1);
     exit(result);
 }
 
@@ -57,11 +63,12 @@ int main(int argc, char *argv[]) {
 
     int n = atoi(argv[1]);
     if (n < 0) {
-        fprintf(stderr, "Erreur : N doit être un entier positif ou nul.\n");
+        fprintf(stderr, "Error : N must be an integer.\n");
         return 1;
     }
+    sleep(1);
 
-    printf("Processus principal %d commence le calcul pour F(%d)\n", getpid(), n);
+    printf("Main process %d begins the calculation for (%d)\n", getpid(), n);
     spawn_fibonacci_processes(n);
     return 0;//
 }
